@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Camp Site Review - <?php echo $view->pageTitle; ?></title>
+    <!-- Bootstrap links -->
+    <link rel="stylesheet" href="../css/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../css/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/css/reboot.min.css">
+    <link rel="stylesheet" href="../css/css/myStyle.css"> <!-- Not being used right now -->
+
+</head>
+
+<body role="document">
+
+<div class="container">
+    <div  class="row">
+        <div id="title" class="col-xs-12 col-md-4">
+            <img src="../../images/Logo.PNG" alt="Camp Logo" style="height: 200px; width: 100%"/>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="../../index.php">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <?php if (isset($_SESSION['email'])) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../favourite.php">Favourite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../profile.php">Profile</a>
+                    </li>
+                    <?php if (isset($_SESSION['admin'])) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../authorisation.php">Authorise Request</a>
+                        </li>
+                    <?php } ?>
+                    <?php if (isset($_SESSION['admin']) || isset($_SESSION['authorised'])) { ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="../../manageMyCamps.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage Records
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="../../updateRecord.php?add=1">Add Record</a>
+                                <a class="dropdown-item" href="../../manageMyCamps.php">Edit Records</a>
+                            </div>
+                        </li>
+                    <?php } else if (! isset($_SESSION['authorise']) || ! in_array($_SESSION['email'],$_SESSION['authorise']) ) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../index.php?authorisation=1">Request Authorisation</a>
+                        </li>
+                    <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.php?logout=true">Log out</a>
+                    </li>
+                <?php } else { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../login.php">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../register.php">Register</a>
+                </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </nav>

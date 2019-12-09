@@ -1,0 +1,113 @@
+<?php require_once ('template/header.phtml'); ?>
+
+<div class="row">
+
+    <?php if (isset($_GET['edit'])) { ?>
+    <h3><?php echo $view->pageTitle; ?></h3>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>?campID=<?php echo $view->oneCamp->getCampID();?>&edit=1" method="post"
+          id="recordForm" class="form-group col-sm-12 bg-light" style="border-radius: 10px; border: 2px solid;">
+        <?php } else { ?>
+        <h3><?php echo $view->pageTitle; ?></h3>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?add=1" method="post" id="recordForm"
+              class="form-group col-sm-12 bg-light" style="border-radius: 10px; border: 2px solid;">
+            <?php } ?>
+
+            <?php if (count($view->errors) > 0 ): ?>
+                <div class="alert alert-danger col-sm-12">
+                    <?php foreach ($view->errors as $e): ?>
+                        <span><?php echo $e; ?></span><br>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif ?>
+
+            <div class="form-group">
+                <label for="campName" class="control-label">Name of Camp Site</label>
+                <div class="input-group">
+                    <input type="text" name="campName" class="form-control" value="<?php if (isset($_GET['edit'])) {
+                        echo $view->oneCamp->getCampName(); } else {echo $view->campName;} ?>" placeholder="Enter Camp Name" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="longitude" class="control-label">Longitude</label>
+                <div class="input-group">
+                    <input type="text" name="longitude" class="form-control" value="<?php if (isset($_GET['edit'])) {
+                        echo $view->oneCamp->getLongitude();} else {echo $view->longitude;} ?>" placeholder="Enter longitude" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="latitude" class="control-label">Latitude</label>
+                <div class="input-group">
+                    <input type="text" name="latitude" class="form-control" value="<?php if (isset($_GET['edit'])) {
+                        echo $view->oneCamp->getLatitude();} else {echo $view->latitude;} ?>" placeholder="Enter latitude" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="country" class="control-label">Country</label>
+                <div class="input-group">
+                    <input type="text" name="country" class="form-control" value="<?php if (isset($_GET['edit'])) {
+                        echo $view->oneCamp->getCountry();} else {echo $view->country;} ?>" placeholder="Enter country" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address" class="control-label">Address</label>
+                <div class="input-group">
+                <textarea name="address" form="recordForm" class="form-control" placeholder="Enter Full Address" style="resize: none;"
+                          required><?php if (isset($_GET['edit'])) { echo $view->oneCamp->getAddress();} else {echo $view->address;} ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label">Description</label>
+                <div class="input-group">
+                <textarea name="description" form="recordForm" class="form-control" placeholder="Enter Camp Description" style="resize: none;"
+                          required><?php if (isset($_GET['edit'])) {echo $view->oneCamp->getDescription();} else {echo $view->description;} ?></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="openDays" class="control-label col-sm-12 col-md-auto">Days that camp is open:</label>
+                <input type="checkbox" name="days[]" value="mon" <?php if (isset($_GET['edit']) && in_array('mon', $view->daysArray)) { echo 'checked';} ?> >Monday
+                <input type="checkbox" name="days[]" value="tue" <?php if (isset($_GET['edit']) && in_array('tue', $view->daysArray)) { echo 'checked';} ?> >Tuesday
+                <input type="checkbox" name="days[]" value="wed" <?php if (isset($_GET['edit']) && in_array('wed', $view->daysArray)) { echo 'checked';} ?> >Wednesday
+                <input type="checkbox" name="days[]" value="thur" <?php if (isset($_GET['edit']) && in_array('thur', $view->daysArray)) { echo 'checked';} ?> >Thursday
+                <input type="checkbox" name="days[]" value="fri" <?php if (isset($_GET['edit']) && in_array('fri', $view->daysArray)) { echo 'checked';} ?> >Friday
+                <input type="checkbox" name="days[]" value="sat" <?php if (isset($_GET['edit']) && in_array('sat', $view->daysArray)) { echo 'checked';} ?> >Saturday
+                <input type="checkbox" name="days[]" value="sun" <?php if (isset($_GET['edit']) && in_array('sun', $view->daysArray)) { echo 'checked';} ?> >Sunday
+            </div>
+            <div class="form-group">
+                <label for="facilities" class="control-label col-sm-12 col-md-auto">Facilities offered:</label>
+                <input type="checkbox" name="facility[]" value="toilet" <?php if (isset($_GET['edit']) && in_array('toilet', $view->facilities)) { echo 'checked';} ?> >Toilet
+                <input type="checkbox" name="facility[]" value="shower" <?php if (isset($_GET['edit']) && in_array('shower', $view->facilities)) { echo 'checked';} ?> >Shower
+                <input type="checkbox" name="facility[]" value="laundry" <?php if (isset($_GET['edit']) && in_array('laundry', $view->facilities)) { echo 'checked';} ?> >Laundry
+                <input type="checkbox" name="facility[]" value="water" <?php if (isset($_GET['edit']) && in_array('water', $view->facilities)) { echo 'checked';} ?> >Water
+                <input type="checkbox" name="facility[]" value="electricity" <?php if (isset($_GET['edit']) && in_array('electricity', $view->facilities)) { echo 'checked';} ?> >Electricity
+                <input type="checkbox" name="facility[]" value="internet" <?php if (isset($_GET['edit']) && in_array('internet', $view->facilities)) { echo 'checked';} ?> >Internet Connection
+                <input type="checkbox" name="facility[]" value="forDisable" <?php if (isset($_GET['edit']) && in_array('disabled facilities', $view->facilities)) { echo 'checked';} ?> >Disabled Facilities
+            </div>
+            <div class="form-group">
+                <label for="idealFor" class="control-label col-sm-12 col-md-auto">Camp ideal for who:</label>
+                <input type="checkbox" name="idealfor[]" value="couple" <?php if (isset($_GET['edit']) && in_array('couples', $view->idealFor)) { echo 'checked';} ?> >Couples
+                <input type="checkbox" name="idealfor[]" value="family" <?php if (isset($_GET['edit']) && in_array('family', $view->idealFor)) { echo 'checked';} ?> >Family
+                <input type="checkbox" name="idealfor[]" value="sameSex" <?php if (isset($_GET['edit']) && in_array('single_sex_group', $view->idealFor)) { echo 'checked';} ?> >Single Sex Group
+                <input type="checkbox" name="idealfor[]" value="under18" <?php if (isset($_GET['edit']) && in_array('under_18', $view->idealFor)) { echo 'checked';} ?> >Under 18
+            </div>
+
+            <?php if (isset($_GET['edit'])) { ?>
+                <div class="form-group">
+                    <lable for="currentPic" class="control-label">Current picture</lable>
+                    <input type="text" name="currentPic" class="form-control" value="<?php echo $view->oneCamp->getPicText(); ?>" readonly="readonly" />
+                </div>
+                <div>
+                    <label for="newPic" class="control-label">Change Picture </label>
+                    <input type="file" name="picture" id="picToUpload" class="form-control" value="<?php echo $view->oneCamp->getPicText(); ?>">
+                    <input type="submit" name="editRecord" class="btn btn-primary btn-lg col-sm-12 col-md-3" value="Edit Record" style="margin: 10px 0px;">
+                </div>
+            <?php } else { ?>
+                <div class="form-group">
+                    <lable for="currentPic" class="control-label">picture</lable>
+                    <input type="file" name="picture" id="picture" class="form-control" required>
+                    <input type="submit" name="addRecord" class="btn btn-primary btn-lg col-sm-12 col-md-3" value="Add Record" style="margin: 10px 0px;">
+                </div>
+            <?php } ?>
+        </form>
+</div>
+<?php require_once ('template/footer.phtml'); ?>

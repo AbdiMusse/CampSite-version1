@@ -1,0 +1,46 @@
+<?php require_once ('template/header.phtml'); ?>
+
+<div class="container">
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-3"></div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6 toppad">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?php echo $view->pageTitle; ?></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>First Name</td>
+                                    <td><?php echo $view->user->getFirstName(); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Last Name</td>
+                                    <td><?php echo $view->user->getLastName(); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td><?php echo $view->user->getGender(); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone Number</td>
+                                    <td><?php echo $view->user->getUserNumber(); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>UserName</td>
+                                    <td><?php echo $view->user->getUserName(); ?></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <a href="../editProfile.php" class="btn btn-primary">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php require_once ('template/footer.phtml'); ?>

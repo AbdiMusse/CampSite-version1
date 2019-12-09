@@ -1,0 +1,29 @@
+<nav class="col-md-12">
+    <ul class="pagination">
+        <li class="page-item <?php if($view->pageNo  == 1){ echo 'disabled'; } ?>">
+            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=<?php echo $view->pageNo -1; ?>" aria-label="Previous" >
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+
+        <li class="page-item <?php if ($view->pageNo == 1) {echo 'active';} ?>">
+            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=1">1</a></li><?php if ($view->pageNo > 3) { ?>...<?php } ?>
+
+        <?php for ($i=$view->starter; $view->holder>$i; $i++) { ?>
+            <li class="page-item <?php if ($i == $view->pageNo) {echo 'active';} ?>">
+                <a class="page-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li> <?php } ?><?php if ($view->pageNo < $view->totalPages-2) { ?>...<?php } ?>
+
+        <li class="page-item <?php if ($view->pageNo == $view->totalPages) {echo 'active';} ?>">
+            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=<?php echo $view->totalPages; ?>"><?php echo $view->totalPages; ?></a></li>
+
+        <li class="page-item <?php if($view->pageNo == $view->totalPages){ echo 'disabled'; } ?>">
+            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=<?php echo $view->pageNo+1; ?>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<?php require_once ('template/footer.phtml'); ?>

@@ -1,0 +1,33 @@
+<?php require_once ('template/header.phtml'); ?>
+
+<div class="container">
+
+    <div>
+        <h3 class="col-md-8 offset-md-4"><?php echo $view->numberOfRequest; ?> request(s) to authorise</h3>
+
+        <?php if ($view->numberOfRequest > 0) { ?>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Request No</th>
+                    <th>User Name</th>
+                    <th>Accept Authorisation</th>
+                    <th>Deny Authorisation</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($view->requests as $request) { ?>
+                    <tr>
+                        <td><?php echo $request->getRequestID(); ?></td>
+                        <td><?php echo $request->getUserEmail(); ?></td>
+                        <td><a class="btn btn-success" href="../authorisation.php?add=<?php echo $request->getUserEmail();?>" role="button">Accept</a></td>
+                        <td><a class="btn btn-warning" href="../authorisation.php?remove=<?php echo $request->getUserEmail();?>" role="button">Deny</a></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        <?php } ?>
+    </div>
+
+</div>
+<?php require_once ('template/footer.phtml'); ?>

@@ -1,0 +1,83 @@
+<?php require_once ('template/header.phtml'); ?>
+
+
+<div class="row">
+    <h3 class="col-sm-12"><?php echo $view->pageTitle; ?></h3>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-group col-sm-12 col-md-6 bg-light"
+          style="border-radius: 10px; border: 2px solid;">
+
+        <?php if (count($view->errors) > 0 ): ?>
+            <div class="alert alert-danger col-sm-12">
+                <?php foreach ($view->errors as $e): ?>
+                    <span><?php echo $e; ?></span><br>
+                <?php endforeach; ?>
+            </div>
+        <?php endif ?>
+
+        <div class="form-group">
+            <label for="firstName" class="control-label">First Name</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="firstName"
+                           value="<?php echo $view->user->getFirstName(); ?>" placeholder="Enter your First Name" required />
+                </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="lastName"
+                           value="<?php echo $view->user->getLastName(); ?>" placeholder="Enter your Last Name" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="number" class="cols-sm-2 control-label">Phone Number</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="number"
+                           value="<?php echo $view->user->getUserNumber(); ?>" placeholder="Enter your Phone Number" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <input type="radio" name="gender" value="male" <?php if ($view->user->getGender() == 'male') { echo 'checked';} ?>> Male
+            <input type="radio" name="gender" value="female" <?php if ($view->user->getGender() == 'female') { echo 'checked';} ?>> Female
+            <input type="radio" name="gender" value="other" <?php if ($view->user->getGender() == 'other') { echo 'checked';} ?>> Other<br>
+        </div>
+
+        <div class="form-group">
+            <label for="userName" class="cols-sm-2 control-label">UserName</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <input type="email" class="form-control" name="userName"
+                           value="<?php echo $view->user->getUserName(); ?> " placeholder="Enter your Username" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password1" class="cols-sm-2 control-label">Password</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <input type="password" class="form-control" name="password1" placeholder="Enter Your Password" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password2" class="cols-sm-2 control-label">Password</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <input type="password" class="form-control" name="password2" placeholder="Confirm Your Password" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg col-sm-12 col-md-4" name="editProfile">Edit</button>
+            <a class="btn btn-primary btn-lg col-sm-12 col-md-4" href="../profile.php" role="button">Cancel</a>
+        </div>
+    </form>
+</div>
+<?php require_once ('template/footer.phtml'); ?>

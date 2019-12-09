@@ -1,0 +1,120 @@
+<?php require_once ('template/header.phtml'); ?>
+
+<nav class="navbar navbar-light offset-lg-3">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" style="margin: 10px 0px;" class="form-inline">
+        <input type="text" onkeyup="showHint(this.value)" placeholder="Search..." name="searchText" class="form-control mr-sm-2">
+        <button type="submit" name="search" class="btn btn-outline-success  my-2 my-sm-0">Search</button>
+        <?php if (isset($_SESSION['searchTerm'])) { ?>
+            <button type="submit" name="endSearch" class="btn btn-outline-danger my-2 my-sm-0">End Search</button>
+        <?php } ?>
+        <?php if (isset($_SESSION['filter'])) { ?>
+            <button type="submit" name="endFilter" class="btn btn-outline-danger my-2 my-sm-0">End Filter</button>
+        <?php } ?>
+        <p class="col-sm-12">Suggetions: <span id="txtHint"></span></p>
+    </form>
+</nav>
+
+<div class="row">
+    <div id="filter" class="col-sm-12 col-lg-3" style="margin-bottom: 10px;">
+        <div class="menu sticky-top  bg-light">
+            <div style="border: solid; padding: 10px;">
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <div class="form-group">
+                        <label for="facilities" class="control-label">Facilities:</label><br>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="toilet">Toilet</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="shower">Shower</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="laundry">Laundry</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="water">Water</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="electricity">Electricity</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="internet">Internet Connection</div>
+                        <div class="d-inline-block"><input type="checkbox" name="facility[]" value="forDisable">Disabled Facilities</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="idealFor" class="control-label">Ideal for:</label><br>
+                        <div class="d-inline-block"><input type="checkbox" name="idealfor[]" value="couple">Couples</div>
+                        <div class="d-inline-block"><input type="checkbox" name="idealfor[]" value="family">Family</div>
+                        <div class="d-inline-block"><input type="checkbox" name="idealfor[]" value="sameSex">Single Sex Group</div>
+                        <div class="d-inline-block"><input type="checkbox" name="idealfor[]" value="under18">Under 18</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating" class="control-label">Ratings:</label><br>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="0">0 Stars</div>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="1">1 Star</div>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="2">2 Stars</div>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="3">3 Stars</div>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="4">4 Stars</div>
+                        <div class="d-inline-block"><input type="radio" name="stars[]" value="5">5 Stars</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="country" class="control-label">Country:</label><br>
+                        <?php foreach ($view->filterCountry as $item) { ?>
+                            <div class="d-inline-block"><input type="radio" name="country[]" value="<?php echo $item[0]; ?>"><?php echo $item[0]; ?></div>
+                        <?php } ?>
+                    </div>
+                    <input type="submit" name="filter" class="btn btn-primary col-sm-12" value="Filter">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="col-sm-12 col-lg-9">
+        <?php foreach ($view->campSites as $camps) { ?>
+            <article class="row" style="margin-bottom: 20px;">
+                <div class="col-sm-12 col-md-4">
+                    <a href="../campDetail.php?id=<?php echo $camps->getCampID()?>">
+                        <img src="../images/<?php echo $camps->getPicText()?>" alt="noPicture" style="height: 250px; width: 100%;">
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <div class="col-sm-12" style="background-color: #71dd8a;">
+                        <a href="../campDetail.php?id=<?php echo $camps->getCampID()?>">
+                            <p style="display: inline-block;"><?php echo $camps->getCampName();?></p>
+                        </a>
+
+                        <?php if (isset($_SESSION['email'])) { ?>
+                            <?php if (isset($_SESSION['favourites']) && in_array( $camps->getCampID(), $_SESSION['favourites'])) { ?>
+                                <button disabled class="btn btn-secondary" style="margin-top: 10px;">In Favourites</button>
+                            <?php } else { ?>
+                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>?pageNo=<?php echo $view->pageNo;?>" method="post" style="display: inline-block;">
+                                    <input type="hidden" name="favouriteID" value="<?php echo $camps->getCampID();?>">
+                                    <button type="submit" name="addToFavourite" class="btn btn-primary" style="margin-top: 10px;">Add to favourite</button>
+                                </form>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-sm-12" style="background-color: #71dd8a; display: inline-block;">
+                        <p>Description:</p>
+                        <p><?php echo  $camps->getDescription()?></p>
+                    </div>
+                    <div class="col-sm-12" style="background-color: #71dd8a; padding-bottom: 30px;">
+                        <p><?php echo  $camps->getCountry()?>, <?php echo  $camps->getAddress()?></p>
+                    </div>
+                </div>
+            </article>
+        <?php } ?>
+
+        <div class="row">
+            <?php require_once ('pagination.phtml'); ?>
+        </div>
+    </div>
+</div>
+<?php require_once ('template/footer.phtml'); ?>
+
+<script>
+    function showHint(str) {
+        if (str.length == 0) {
+            document.getElementById('txtHint').innerHTML = "";
+            return;
+        } else {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var uic = document.getElementById('txtHint');
+                    uic.innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open('GET', '../index2.php?q='+str, true);
+            xmlhttp.send();
+        }
+    }
+</script>

@@ -1,0 +1,118 @@
+<?php require_once('template/header.phtml'); ?>
+
+<div style="border-radius: 10px; border: 2px solid; padding: 10px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-10">
+            <h1><?php echo $view->camp->getCampName(); ?></h1>
+        </div>
+    </div>
+
+    <?php if (isset($_SESSION['email'])) { ?>
+        <?php if (isset($_SESSION['myRatings']) && in_array($view->camp->getCampID(), $_SESSION['myRatings'])) { ?>
+            <div class="col-sm-12 col-md-6">
+                <p>You have rated this camp!</p>
+            </div>
+        <?php } else { ?>
+            <div class="col-sm-12 col-md-6">
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?php echo $view->camp->getCampID(); ?>" method="post">
+                    <button type="submit" name="giveRating">Rate me</button>
+                    <input type="radio" name="star[]" value="0">0
+                    <input type="radio" name="star[]" value="1">1
+                    <input type="radio" name="star[]" value="2">2
+                    <input type="radio" name="star[]" value="3">3
+                    <input type="radio" name="star[]" value="4">4
+                    <input type="radio" name="star[]" value="5">5
+                    <input type="hidden" name="rateCampID" value="<?php echo $view->camp->getCampID(); ?>">
+                </form>
+            </div>
+        <?php } ?>
+    <?php } ?>
+    <div class="col-sm-8" style="padding: 10px;">
+        <img src="../images/<?php echo $view->camp->getPicText(); ?>" alt="noPicture" style="width: 100%; height: 400px;">
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Description</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-body"><?php echo $view->camp->getDescription(); ?></p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Rating</h3>
+        </div>
+        <div class="card-body">
+            <?php if ($view->camp->getRatings() == null) { ?>
+                <p>No rating on this camp yet</p>
+            <?php } else { ?>
+                <p><?php echo $view->camp->getRatings(); ?> out of 5</p>
+            <?php } ?>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Address</h3>
+        </div>
+        <div class="card-body">
+            <p><?php echo $view->camp->getCountry(); ?>, <?php echo $view->camp->getAddress(); ?></p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Coordinates</h3>
+        </div>
+        <div class="card-body">
+            <p><?php echo $view->camp->getLongitude(); ?>, <?php echo $view->camp->getLatitude(); ?></p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Opening Time</h3>
+        </div>
+        <div class="card-body">
+            <p><?php echo $view->camp->getOpenDays(); ?></p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Facilities Offered</h3>
+        </div>
+        <div class="card-body">
+            <?php $view->facility = $view->camp->checkFacilities(); ?>
+            <ul>
+                <?php foreach ($view->facility as $fac) { ?>
+                    <li><?php echo $fac; ?></li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Ideal For</h3>
+        </div>
+        <div class="card-body">
+            <?php $view->idealFor = $view->camp->checkIdealFor(); ?>
+            <ul>
+                <?php foreach ($view->idealFor as $ppl) { ?>
+                    <li><?php echo $ppl; ?></li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+
+    <?php if (isset($_SESSION['admin']) || (isset($_SESSION['authorised']))) { ?>
+        <div class="card">
+            <div class="card-header">
+                <h3>Contact Owner</h3>
+            </div>
+            <div class="card-body">
+                <p>Name: <?php echo $view->user->getFirstName(); ?> <?php echo $view->user->getLastName(); ?></p>
+                <p>Email: <?php echo $view->user->getUserName(); ?></p>
+                <p>Number: <?php echo $view->user->getUserNumber(); ?></p>
+            </div>
+        </div>
+    <?php } ?>
+</div>
+<?php require_once ('template/footer.phtml'); ?>

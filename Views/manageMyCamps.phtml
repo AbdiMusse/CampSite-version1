@@ -1,0 +1,49 @@
+<?php require_once('template/header.phtml'); ?>
+
+    <div class="row">
+        <h3 class="col-sm-12"><?php echo $view->pageTitle; ?></h3>
+    </div>
+
+<?php if ($view->numberOfCamps == 0) { ?>
+    <div class="row">
+        <h1 class="col-md-6 offset-md-3">You have no Camps to manage &#x1F61E</h1>
+    </div>
+<?php }  else { ?>
+    <?php foreach ($view->campSites as $camps) { ?>
+        <article class="row" style="margin-bottom: 20px;">
+            <div class="col-sm-12 col-md-4">
+                <a href="../campDetail.php?id=<?php echo $camps->getCampID() ?>">
+                    <img src="../images/<?php echo $camps->getPicText() ?>" alt="noPicture" style="height: 250px; width: 100%;">
+                </a>
+            </div>
+            <div class="col-sm-12 col-md-8">
+                <div class="col-sm-12" style="background-color: #71dd8a;">
+                    <a href="../campDetail.php?id=<?php echo $camps->getCampID()?>">
+                        <p style="display: inline-block;"><?php echo $camps->getCampName();?></p>
+                    </a>
+                </div>
+                <div class="col-sm-12" style="background-color: #71dd8a; display: inline-block;">
+                    <p>Description:</p>
+                    <p><?php echo $camps->getDescription() ?></p>
+                </div>
+                <div class="col-sm-12" style="background-color: #71dd8a; padding-bottom: 10px;">
+                    <p><?php echo $camps->getCountry() ?>,</p>
+                    <p><?php echo $camps->getAddress() ?></p>
+                </div>
+                <div class="col-sm-12" style="background-color: #71dd8a">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-inline">
+                        <input type="hidden" name="use-campID" value="<?php echo $camps->getCampID() ?>">
+                        <input type="submit" name="delete" class="btn btn-danger col-sm-6" value="Delete">
+                        <input type="submit" name="edit" class="btn btn-warning col-sm-6" value="Edit">
+                    </form>
+                </div>
+            </div>
+        </article>
+    <?php } ?>
+    <?php if (isset($_SESSION['admin'])) { ?>
+        <div class="row">
+            <?php require_once ('pagination.phtml'); ?>
+        </div>
+    <?php } ?>
+<?php } ?>
+<?php require_once ('template/footer.phtml'); ?>
